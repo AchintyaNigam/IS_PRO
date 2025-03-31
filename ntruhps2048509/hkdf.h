@@ -54,8 +54,8 @@ unsigned char *read_from_file(const char *filename, size_t *len) {
     fseek(f, 0, SEEK_END);
     *len = ftell(f);
     fseek(f, 0, SEEK_SET);
-    
-    unsigned char *data = malloc(*len);
+
+    unsigned char *data = (unsigned char*)malloc(*len);
     if (!data) {
         fclose(f);
         fprintf(stderr, "Memory allocation failed\n");
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
         crypto_kem_enc(ciphertext, shared_key, pk);
         
         // Encrypt data with shared key
-        unsigned char *encrypted_data = malloc(input_len);
+        unsigned char *encrypted_data = (unsigned char*)malloc(input_len);
         if (!encrypted_data) {
             fprintf(stderr, "Memory allocation failed\n");
             free(pk);
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
         
         // Create output buffer: [ciphertext][data_length][encrypted_data]
         size_t output_len = NTRU_CIPHERTEXTBYTES + sizeof(size_t) + input_len;
-        unsigned char *output_data = malloc(output_len);
+        unsigned char *output_data = (unsigned char*)malloc(output_len);
         if (!output_data) {
             fprintf(stderr, "Memory allocation failed\n");
             free(pk);
@@ -236,7 +236,7 @@ int main(int argc, char *argv[]) {
         unsigned char *encrypted_content = encrypted_data + NTRU_CIPHERTEXTBYTES + sizeof(size_t);
         
         // Decrypt the data
-        unsigned char *decrypted_data = malloc(original_len);
+        unsigned char *decrypted_data = (unsigned char*)malloc(original_len);
         if (!decrypted_data) {
             fprintf(stderr, "Memory allocation failed\n");
             free(sk);
